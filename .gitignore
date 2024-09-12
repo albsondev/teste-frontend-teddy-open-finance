@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/orquestrador/node_modules
+/login-angular/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
