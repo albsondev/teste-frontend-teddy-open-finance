@@ -17,9 +17,12 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "style-loader"
+            ],
             "outputPath": "dist/login-angular",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.single-spa.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -35,18 +38,11 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            },
-            "main": "src/main.single-spa.ts",
             "customWebpackConfig": {
               "path": "extra-webpack.config.js",
               "libraryName": "login-angular",
               "libraryTarget": "umd"
-            },
-            "deployUrl": "http://localhost:NaN/"
+            }
           },
           "configurations": {
             "production": {
