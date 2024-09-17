@@ -49,14 +49,14 @@ export default function ClientsPage() {
         ))}
       </div>
 
+      <button className="w-full bg-transparent border-2 border-orange-500 text-orange-500 font-semibold mt-2 py-2 px-4 rounded-md">Criar Cliente</button>
+
       {/* Componente de paginação */}
       <Pagination
         currentPage={page}
         totalPages={totalPages}
         onPageChange={(newPage) => setPage(newPage)}
       />
-
-      <button className="mt-8 py-2 px-4 bg-orange-500 text-white rounded-lg">Criar Cliente</button>
     </div>
   );
 }
