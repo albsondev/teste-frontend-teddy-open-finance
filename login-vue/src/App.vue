@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import Cookies from 'js-cookie';
 
 export default defineComponent({
   name: 'App',
@@ -27,10 +28,10 @@ export default defineComponent({
     const username = ref('');
 
     const handleLogin = () => {
-      // Armazenar o nome do usuário no localStorage para que seja acessível no React.js
-      localStorage.setItem('username', username.value);
-      // Redirecionar para a próxima etapa (como a página de clientes no React.js)
-      window.location.href = 'http://localhost:3000'; // Ajuste para a URL correta
+      // Armazenar o nome do usuário em um cookie
+      Cookies.set('username', username.value, { path: '/', sameSite: 'Lax' });
+      // Redirecionar para a página de clientes em React
+      window.location.href = 'http://localhost:3001';  // Ajuste conforme a URL do React
     };
 
     return {
