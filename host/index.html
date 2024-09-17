@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microfrontend Host</title>
+</head>
+<body>
+  <h1>Microfrontend Host</h1>
+  <div id="app">
+    <!-- O conteúdo do Vue ou React será carregado aqui -->
+  </div>
+  
+  <script>
+    // Navegar para o login do Vue.js
+    function goToLogin() {
+      window.location.href = 'http://localhost:8081'; // URL do microfrontend Vue.js
+    }
+
+    // Navegar para o cliente em React.js
+    function goToClients() {
+      window.location.href = 'http://localhost:3000'; // URL do microfrontend React.js
+    }
+
+    goToLogin(); // Exemplo de navegação inicial para o login do Vue.js
+  </script>
+</body>
+</html>

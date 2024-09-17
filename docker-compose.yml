@@ -1,0 +1,29 @@
+version: '3'
+services:
+  host:
+    build: ./host
+    ports:
+      - "8080:80" # Porta para acessar o host principal
+    volumes:
+      - ./host:/usr/share/nginx/html  # Mapeando o diretório host para o container
+    depends_on:
+      - clients-react
+      - login-vue
+
+  clients-react:
+    build: ./clients-react
+    ports:
+      - "3001:3001" # Porta para acessar o React.js
+    networks:
+      - microfrontend-network
+
+  login-vue:
+    build: ./login-vue
+    ports:
+      - "8081:80" # Porta para acessar o Vue.js
+    networks:
+      - microfrontend-network
+
+networks:
+  microfrontend-network:
+    driver: bridge
