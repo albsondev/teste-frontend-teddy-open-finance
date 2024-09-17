@@ -1,31 +1,42 @@
+import { BsPlus, BsPencil, BsTrash } from 'react-icons/bs';
+
 interface ClientCardProps {
-    id: number;
-    name: string;
-    salary: number;
-    companyValue: number;
-    onSelect: () => void;
-    onEdit: () => void;
-    onDelete: () => void;
-  }
-  
-  export default function ClientCard({name, salary, companyValue, onSelect, onEdit, onDelete }: ClientCardProps) {
-    return (
-      <div className="bg-white shadow-md rounded-md p-4">
-        <h3 className="font-bold text-xl">{name}</h3>
-        <p>Salário: R${salary}</p>
-        <p>Valor da Empresa: R${companyValue}</p>
-        <div className="flex justify-between mt-4">
-          <button onClick={onSelect} className="text-green-500 hover:text-green-700">
-            Selecionar
-          </button>
-          <button onClick={onEdit} className="text-blue-500 hover:text-blue-700">
-            Editar
-          </button>
-          <button onClick={onDelete} className="text-red-500 hover:text-red-700">
-            Excluir
-          </button>
-        </div>
+  id: number;
+  name: string;
+  salary: number;
+  companyValue: number;
+  onSelect: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}
+
+export default function ClientCard({ name, salary, companyValue = 0, onSelect, onEdit, onDelete }: ClientCardProps) {
+  return (
+    <div className="bg-white border shadow-lg rounded-lg p-4 flex flex-col items-center justify-between">
+      <h3 className="font-bold text-xl mb-2">{name}</h3>
+      <p className="text-sm">Salário: {salary.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+      <p className="text-sm">Empresa: {companyValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+
+      <div className="flex flex-row items-center justify-between px-1 mt-4 w-full">
+        <button
+          className="text-4xl text-black"
+          onClick={onSelect}
+        >
+          <BsPlus />
+        </button>
+        <button
+          className="text-base text-black"
+          onClick={onEdit}
+        >
+          <BsPencil />
+        </button>
+        <button
+          className="text-base text-red-500"
+          onClick={onDelete}
+        >
+          <BsTrash />
+        </button>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}

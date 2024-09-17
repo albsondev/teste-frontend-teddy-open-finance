@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #F5F5F5;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #F5F5F5;
+    --foreground: #0a0a0a;
   }
 }
 
@@ -20,6 +20,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.selected {
+  text-decoration: underline;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

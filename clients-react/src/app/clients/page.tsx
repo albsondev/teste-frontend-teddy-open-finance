@@ -1,79 +1,62 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-import ClientCard from '../components/ClientCard';
+import { useState, useEffect } from 'react';
+import ClientCard from '@/app/components/ClientCard';
+import { getClients } from '@/services/api'; // Importando a função da API
+import { Client } from '@/app/interfaces/client';
 import Pagination from '../components/Pagination';
-import { getClients } from '../../services/api';
+import TotalClients from '../components/TotalClients';
 
-interface Client {
-  id: number;
-  name: string;
-  salary: number;
-  companyValuation: number; // Altere isso para companyValue se necessário
-  createdAt: string;
-  updatedAt: string;
-}
 
 export default function ClientsPage() {
   const [clients, setClients] = useState<Client[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(8);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalClients, setTotalClients] = useState(0); // Estado para o total de clientes
+  const [page, setPage] = useState(1);
+  const [limit] = useState(16);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    const fetchClients = async () => {
+    async function fetchClients() {
       try {
-        const data = await getClients(currentPage - 1, limit);
-        setClients(data.clients);
-        setTotalPages(data.totalPages);
+        const { clients, totalPages } = await getClients(page, limit);
+        setClients(clients);
+        setTotalPages(totalPages);
+        setTotalClients(clients.length);
       } catch (error) {
-        console.error('Erro ao buscar clientes:', error);
+        console.error("Erro ao buscar clientes:", error);
       }
-    };
+    }
 
     fetchClients();
-  }, [currentPage, limit]);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const handleSelect = (clientId: number) => {
-    console.log('Cliente selecionado:', clientId);
-  };
-
-  const handleEdit = (clientId: number) => {
-    console.log('Editando cliente:', clientId);
-  };
-
-  const handleDelete = (clientId: number) => {
-    console.log('Excluindo cliente:', clientId);
-  };
+  }, [page, limit]);
 
   return (
-    <div>
-      <div className="p-4">
-        <h1>Lista de Clientes</h1>
-
-        {/* Renderização de cards de clientes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-          {clients.map((client: Client) => (
-            <ClientCard
-              key={client.id}
-              id={client.id}
-              name={client.name}
-              salary={client.salary}
-              companyValue={client.companyValuation}
-              onSelect={() => handleSelect(client.id)}
-              onEdit={() => handleEdit(client.id)}
-              onDelete={() => handleDelete(client.id)}
-            />
-          ))}
-        </div>
-
-        {/* Paginação */}
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+    <div className="max-w-screen-lg mx-auto p-6">
+      <TotalClients totalClients={totalClients} />
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+        {clients.map(client => (
+          <ClientCard
+            id={client.id}
+            key={client.id}
+            name={client.name}
+            salary={client.salary}
+            companyValue={client.companyValue}
+            onSelect={() => console.log('Selecionar', client.id)}
+            onEdit={() => console.log('Editar', client.id)}
+            onDelete={() => console.log('Deletar', client.id)}
+          />
+        ))}
       </div>
+
+      {/* Componente de paginação */}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={(newPage) => setPage(newPage)}
+      />
+
+      <button className="mt-8 py-2 px-4 bg-orange-500 text-white rounded-lg">Criar Cliente</button>
     </div>
   );
 }
