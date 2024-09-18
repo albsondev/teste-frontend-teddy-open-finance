@@ -8,6 +8,7 @@ import Pagination from '@/app/components/Pagination';
 import TotalClients from '@/app/components/TotalClients';
 import EditClientModal from '@/app/components/Modals/EditClientModal';
 import DeleteClientModal from '@/app/components/Modals/DeleteClientModal';
+import CreateClientModal from '../components/Modals/CreateClientModal';
 
 
 export default function ClientsPage() {
@@ -19,6 +20,7 @@ export default function ClientsPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchClients() {
@@ -48,6 +50,7 @@ export default function ClientsPage() {
   const handleCloseModals = () => {
     setEditModalOpen(false);
     setSelectedClient(null);
+    setCreateModalOpen(false);
   };
 
   const handleUpdateClient = (updatedClient: Client) => {
@@ -56,6 +59,10 @@ export default function ClientsPage() {
 
   const handleDeleteClientFromList = (deletedClient: Client) => {
     setClients(prevClients => prevClients.map(c => (c.id === deletedClient.id ? deletedClient : c)));
+  };
+
+  const handleCreateClient = (newClient: Client) => {
+    setClients(prevClients => [newClient, ...prevClients]);
   };
 
   return (
@@ -77,7 +84,8 @@ export default function ClientsPage() {
         ))}
       </div>
 
-      <button className="w-full bg-transparent border-2 border-orange-500 text-orange-500 font-semibold mt-4 py-2 px-4 rounded-md">Criar Cliente</button>
+      <button className="w-full bg-transparent border-2 border-orange-500 text-orange-500 font-semibold mt-4 py-2 px-4 rounded-md"
+      onClick={() => setCreateModalOpen(true)}>Criar Cliente</button>
 
       {/* Componente de paginação */}
       <Pagination
@@ -93,6 +101,13 @@ export default function ClientsPage() {
 
       {isDeleteModalOpen && selectedClient && (
         <DeleteClientModal client={selectedClient} onClose={handleCloseModals} onDelete={handleDeleteClientFromList} />
+      )}
+
+      {isCreateModalOpen && (
+        <CreateClientModal
+          onCreate={handleCreateClient}
+          onClose={handleCloseModals}
+        />
       )}
     </div>
   );

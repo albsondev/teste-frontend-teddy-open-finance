@@ -44,8 +44,8 @@ export default function EditClientModal({ client, onClose, onUpdate }: EditClien
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-md w-1/3">
       <div className='w-full flex flex-row justify-between items-center -mt-2 mb-2'>
-      <span className='font-bold'>Editar Cliente:</span>
-      <span title='Fechar modal de edição' className='text-xl cursor-pointer' onClick={onClose}><BsXLg /></span>
+        <span className='font-bold'>Editar Cliente:</span>
+        <span title='Fechar modal de edição' className='text-xl cursor-pointer' onClick={onClose}><BsXLg /></span>
       </div>
         <input
           value={name}

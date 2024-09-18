@@ -25,4 +25,11 @@ export const deleteClient = async (id: number) => {
   return response.data;
 };
 
+// Função para criar um novo cliente
+export const createClient = async (data: { name: string; salary: number; companyValuation: number }) => {
+  const response = await api.post('/users', data); // Usando POST para criar um novo cliente
+  return response.data;
+};
+
+
 export default api;
