@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Client } from '../../interfaces/client';
+import { Client } from '@/app/interfaces/client';
 import { BsXLg } from 'react-icons/bs';
 
 interface EditClientModalProps {

@@ -7,6 +7,7 @@ import { Client } from '@/app/interfaces/client';
 import Pagination from '@/app/components/Pagination';
 import TotalClients from '@/app/components/TotalClients';
 import EditClientModal from '@/app/components/Modals/EditClientModal';
+import DeleteClientModal from '@/app/components/Modals/DeleteClientModal';
 
 
 export default function ClientsPage() {
@@ -17,6 +18,7 @@ export default function ClientsPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchClients() {
@@ -38,6 +40,11 @@ export default function ClientsPage() {
     setEditModalOpen(true);
   };
 
+  const handleDeleteClient = (client: Client) => {
+    setSelectedClient(client);
+    setDeleteModalOpen(true);
+  };
+
   const handleCloseModals = () => {
     setEditModalOpen(false);
     setSelectedClient(null);
@@ -56,7 +63,7 @@ export default function ClientsPage() {
             salary={client.salary}
             companyValuation={client.companyValuation}
             onEdit={() => handleEditClient(client)}
-            onDelete={() => console.log('Deletar', client.id)}
+            onDelete={() => handleDeleteClient(client)}
             onSelect={()=> console.log('ok')}
           />
         ))}
@@ -74,6 +81,12 @@ export default function ClientsPage() {
        {/* Modais */}
        {isEditModalOpen && selectedClient && (
         <EditClientModal client={selectedClient} onClose={handleCloseModals} onUpdate={function (): void {
+          throw new Error('Function not implemented.');
+        } } />
+      )}
+
+      {isDeleteModalOpen && selectedClient && (
+        <DeleteClientModal client={selectedClient} onClose={handleCloseModals} onDelete={function (): void {
           throw new Error('Function not implemented.');
         } } />
       )}
