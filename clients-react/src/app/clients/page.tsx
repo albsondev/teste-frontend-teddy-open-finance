@@ -54,7 +54,7 @@ export default function ClientsPage() {
             key={client.id}
             name={client.name}
             salary={client.salary}
-            companyValue={client.companyValue}
+            companyValuation={client.companyValuation}
             onEdit={() => handleEditClient(client)}
             onDelete={() => console.log('Deletar', client.id)}
             onSelect={()=> console.log('ok')}

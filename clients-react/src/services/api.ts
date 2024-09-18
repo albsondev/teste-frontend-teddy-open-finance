@@ -14,7 +14,7 @@ export const getClients = async (page: number, limit: number) => {
   };
 
 // Função para atualizar cliente
-export const updateClient = async (id: number, data: { name?: string; salary?: string; companyValue?: string }) => {
+export const updateClient = async (id: number, data: { name?: string; salary?: string; companyValuation?: string }) => {
   const response = await api.patch(`/users/${id}`, data);
   return response.data;
 };

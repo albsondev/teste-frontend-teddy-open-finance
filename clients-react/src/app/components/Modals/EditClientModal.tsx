@@ -11,13 +11,13 @@ interface EditClientModalProps {
 export default function EditClientModal({ client, onClose, onUpdate }: EditClientModalProps) {
   const [name, setName] = useState(client?.name || '');
   const [salary, setSalary] = useState(client?.salary || '');
-  const [companyValue, setCompanyValue] = useState(client?.companyValue || '');
+  const [companyValue, setCompanyValue] = useState(client?.companyValuation || '');
 
   useEffect(() => {
     if (client) {
       setName(client.name);
       setSalary(client.salary);
-      setCompanyValue(client.companyValue);
+      setCompanyValue(client.companyValuation);
     }
   }, [client]);
 
