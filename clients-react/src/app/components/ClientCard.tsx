@@ -12,7 +12,7 @@ interface ClientCardProps {
 
 export default function ClientCard({ name, salary, companyValue = 0, onSelect, onEdit, onDelete }: ClientCardProps) {
   return (
-    <div className="bg-white border shadow-md rounded-lg p-4 flex flex-col items-center justify-between">
+    <div className="bg-white border shadow-lg rounded-lg p-4 flex flex-col items-center justify-between">
       <h3 className="font-bold text-xl mb-2">{name}</h3>
       <p className="text-sm">Salário: {salary.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
       <p className="text-sm">Empresa: {companyValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>

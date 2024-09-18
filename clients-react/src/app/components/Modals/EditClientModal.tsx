@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Client } from '../../interfaces/client'; // Certifique-se de que a interface Client esteja sendo importada corretamente
+import { Client } from '../../interfaces/client';
+import { BsXLg } from 'react-icons/bs';
 
 interface EditClientModalProps {
   client: Client | null;
   onClose: () => void;
-  onUpdate: (client: Client) => void; // Função para atualizar o cliente
+  onUpdate: (client: Client) => void;
 }
 
 export default function EditClientModal({ client, onClose, onUpdate }: EditClientModalProps) {
-  // Mover os hooks para o início, antes da condição
   const [name, setName] = useState(client?.name || '');
   const [salary, setSalary] = useState(client?.salary || '');
   const [companyValue, setCompanyValue] = useState(client?.companyValue || '');
 
-  // Usar o useEffect para atualizar os valores quando o cliente mudar
   useEffect(() => {
     if (client) {
       setName(client.name);
@@ -22,17 +21,14 @@ export default function EditClientModal({ client, onClose, onUpdate }: EditClien
     }
   }, [client]);
 
-  // Função para lidar com a submissão do formulário
   const handleSubmit = () => {
-    if (!client) return; // Garantir que o client não seja null
+    if (!client) return;
     const updatedClient: Client = {
       ...client,
-      name,
-      salary,
-      companyValue,
+      name
     };
-    onUpdate(updatedClient); // Atualiza o cliente com os novos valores
-    onClose(); // Fecha o modal
+    onUpdate(updatedClient);
+    onClose();
   };
 
   // Se não houver cliente, não renderiza o conteúdo
@@ -40,34 +36,34 @@ export default function EditClientModal({ client, onClose, onUpdate }: EditClien
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-md">
-        <h2>Editar Cliente</h2>
+      <div className="bg-white p-6 rounded-md w-1/3">
+      <div className='w-full flex flex-row justify-between items-center -mt-2 mb-2'>
+      <span className='font-bold'>Editar Cliente:</span>
+      <span title='Fechar modal de edição' className='text-xl cursor-pointer' onClick={onClose}><BsXLg /></span>
+      </div>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Nome"
-          className="border p-2 rounded w-full mt-2"
+          className="border-2 p-2 rounded w-full mt-2"
         />
         <input
           value={salary}
           onChange={(e) => setSalary(e.target.value)}
           placeholder="Salário"
-          className="border p-2 rounded w-full mt-2"
+          className="border-2 p-2 rounded w-full mt-2"
         />
         <input
           value={companyValue}
           onChange={(e) => setCompanyValue(e.target.value)}
           placeholder="Valor da Empresa"
-          className="border p-2 rounded w-full mt-2"
+          className="border-2 p-2 rounded w-full mt-2"
         />
         <button
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+          className="w-full mt-4 bg-orange-500 text-white font-bold px-4 py-2 rounded"
           onClick={handleSubmit}
         >
-          Atualizar Cliente
-        </button>
-        <button className="mt-2 text-gray-500" onClick={onClose}>
-          Cancelar
+          Editar Cliente
         </button>
       </div>
     </div>
