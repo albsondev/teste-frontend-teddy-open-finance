@@ -50,6 +50,14 @@ export default function ClientsPage() {
     setSelectedClient(null);
   };
 
+  const handleUpdateClient = (updatedClient: Client) => {
+    setClients(prevClients => prevClients.map(c => (c.id === updatedClient.id ? updatedClient : c)));
+  };
+
+  const handleDeleteClientFromList = (deletedClient: Client) => {
+    setClients(prevClients => prevClients.map(c => (c.id === deletedClient.id ? deletedClient : c)));
+  };
+
   return (
     <div className="max-w-screen-lg mx-auto p-6">
       <TotalClients totalClients={totalClients} />
@@ -80,15 +88,11 @@ export default function ClientsPage() {
 
        {/* Modais */}
        {isEditModalOpen && selectedClient && (
-        <EditClientModal client={selectedClient} onClose={handleCloseModals} onUpdate={function (): void {
-          throw new Error('Function not implemented.');
-        } } />
+        <EditClientModal client={selectedClient} onClose={handleCloseModals} onUpdate={handleUpdateClient} />
       )}
 
       {isDeleteModalOpen && selectedClient && (
-        <DeleteClientModal client={selectedClient} onClose={handleCloseModals} onDelete={function (): void {
-          throw new Error('Function not implemented.');
-        } } />
+        <DeleteClientModal client={selectedClient} onClose={handleCloseModals} onDelete={handleDeleteClientFromList} />
       )}
     </div>
   );

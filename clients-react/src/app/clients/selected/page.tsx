@@ -1,79 +1,96 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react';
-import ClientCard from '../../components/ClientCard';
-import Pagination from '../../components/Pagination';
-import { getClients } from '../../../services/api';
-
-interface Client {
-  id: number;
-  name: string;
-  salary: number;
-  companyValuation: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { useState, useEffect } from 'react';
+import ClientCard from '@/app/components/ClientCard';
+import { getClients } from '@/services/api';
+import { Client } from '@/app/interfaces/client';
+import Pagination from '@/app/components/Pagination';
+import TotalClients from '@/app/components/TotalClients';
+import EditClientModal from '@/app/components/Modals/EditClientModal';
+import DeleteClientModal from '@/app/components/Modals/DeleteClientModal';
 
 export default function ClientsPage() {
   const [clients, setClients] = useState<Client[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(8); // Valor padrão de limite
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalClients, setTotalClients] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(16);
+  const [totalPages, setTotalPages] = useState(0);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchClients = async () => {
+    async function fetchClients() {
       try {
-        const data = await getClients(currentPage - 1, limit);
-        setClients(data.clients);
-        setTotalPages(data.totalPages);
+        const { clients, totalPages } = await getClients(page, limit);
+        setClients(clients);
+        setTotalPages(totalPages);
+        setTotalClients(clients.length);
       } catch (error) {
-        console.error('Erro ao buscar clientes:', error);
+        console.error("Erro ao buscar clientes:", error);
       }
-    };
+    }
 
     fetchClients();
-  }, [currentPage, limit]);
+  }, [page, limit]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const handleEditClient = (client: Client) => {
+    setSelectedClient(client);
+    setEditModalOpen(true);
   };
 
-  const handleSelect = (clientId: number) => {
-    console.log('Cliente selecionado:', clientId);
+  const handleDeleteClient = (client: Client) => {
+    setSelectedClient(client);
+    setDeleteModalOpen(true);
   };
 
-  const handleEdit = (clientId: number) => {
-    console.log('Editando cliente:', clientId);
+  const handleCloseModals = () => {
+    setEditModalOpen(false);
+    setDeleteModalOpen(false);
+    setSelectedClient(null);
   };
 
-  const handleDelete = (clientId: number) => {
-    console.log('Excluindo cliente:', clientId);
+  const handleUpdateClient = (updatedClient: Client) => {
+    setClients(prevClients => prevClients.map(c => (c.id === updatedClient.id ? updatedClient : c)));
+  };
+
+  const handleDeleteClientFromList = (deletedClientId: number) => {
+    setClients(prevClients => prevClients.filter(c => c.id !== deletedClientId));
   };
 
   return (
-    <div>
-      <div className="p-4">
-        <h1>Lista de Clientes</h1>
+    <div className="max-w-screen-lg mx-auto p-6">
+      <TotalClients totalClients={totalClients} />
 
-        {/* Renderização de cards de clientes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-          {clients.map((client: Client) => (
-            <ClientCard
-              key={client.id}
-              id={client.id}
-              name={client.name}
-              salary={client.salary}
-              companyValue={client.companyValuation} // Ajuste conforme necessário
-              onSelect={() => handleSelect(client.id)}
-              onEdit={() => handleEdit(client.id)}
-              onDelete={() => handleDelete(client.id)}
-            />
-          ))}
-        </div>
-
-        {/* Paginação */}
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+        {clients.map(client => (
+          <ClientCard
+            id={client.id}
+            key={client.id}
+            client={client}
+            onEdit={() => handleEditClient(client)}
+            onDelete={() => handleDeleteClient(client)}
+          />
+        ))}
       </div>
+
+      {isEditModalOpen && selectedClient && (
+        <EditClientModal
+          client={selectedClient}
+          onUpdate={handleUpdateClient}
+          onClose={handleCloseModals}
+        />
+      )}
+
+      {isDeleteModalOpen && selectedClient && (
+        <DeleteClientModal
+          client={selectedClient}
+          onDelete={handleDeleteClientFromList}
+          onClose={handleCloseModals}
+        />
+      )}
+
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 }

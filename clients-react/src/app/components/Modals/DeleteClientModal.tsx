@@ -1,5 +1,6 @@
 import { Client } from '@/app/interfaces/client';
 import { BsXLg } from 'react-icons/bs';
+import { deleteClient } from '@/services/api';
 
 interface DeleteClientModalProps {
   client: Client | null;
@@ -10,8 +11,15 @@ interface DeleteClientModalProps {
 export default function DeleteClientModal({ client, onClose, onDelete }: DeleteClientModalProps) {
   if (!client) return null; // Garante que o modal não será exibido sem cliente
 
-  const handleDelete = () => {
-    onDelete(client); // Passa o cliente selecionado para a função onDelete
+  const handleDelete = async () => {
+    try {
+      // Chama a API para excluir o cliente
+      await deleteClient(client.id);
+      onDelete(client)// Remove o cliente da lista de clientes
+      onClose(); // Fecha o modal
+    } catch (error) {
+      console.error("Erro ao deletar o cliente:", error);
+    }
   };
 
   return (

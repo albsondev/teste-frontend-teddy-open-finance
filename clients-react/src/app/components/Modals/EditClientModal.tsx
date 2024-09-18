@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Client } from '@/app/interfaces/client';
 import { BsXLg } from 'react-icons/bs';
+import { updateClient } from '@/services/api'; // Importando a função de API
 
 interface EditClientModalProps {
-  client: Client | null;
+   client: Client;
   onClose: () => void;
-  onUpdate: (client: Client) => void;
+  onUpdate: (updatedClient: Client) => void;
 }
 
 export default function EditClientModal({ client, onClose, onUpdate }: EditClientModalProps) {
   const [name, setName] = useState(client?.name || '');
-  const [salary, setSalary] = useState(client?.salary || '');
-  const [companyValue, setCompanyValue] = useState(client?.companyValuation || '');
+  const [salary, setSalary] = useState(client?.salary);
+  const [companyValue, setCompanyValue] = useState(client?.companyValuation);
 
   useEffect(() => {
     if (client) {
@@ -21,14 +22,19 @@ export default function EditClientModal({ client, onClose, onUpdate }: EditClien
     }
   }, [client]);
 
-  const handleSubmit = () => {
-    if (!client) return;
-    const updatedClient: Client = {
-      ...client,
-      name
-    };
-    onUpdate(updatedClient);
-    onClose();
+  const handleSubmit = async () => {
+    try {
+      // Chama a API para atualizar o cliente
+      const updatedClient = await updateClient(client.id, {
+        name,
+        salary,
+        companyValuation: companyValue,
+      });
+      onUpdate(updatedClient); // Atualiza o cliente na lista de clientes
+      onClose(); // Fecha o modal
+    } catch (error) {
+      console.error("Erro ao atualizar o cliente:", error);
+    }
   };
 
   // Se não houver cliente, não renderiza o conteúdo
@@ -48,14 +54,16 @@ export default function EditClientModal({ client, onClose, onUpdate }: EditClien
           className="border-2 p-2 rounded w-full mt-2"
         />
         <input
+          type='number'
           value={salary}
-          onChange={(e) => setSalary(e.target.value)}
+          onChange={(e) => setSalary(parseFloat(e.target.value))}
           placeholder="Salário"
           className="border-2 p-2 rounded w-full mt-2"
         />
         <input
+          type='number'
           value={companyValue}
-          onChange={(e) => setCompanyValue(e.target.value)}
+          onChange={(e) => setCompanyValue(parseFloat(e.target.value))}
           placeholder="Valor da Empresa"
           className="border-2 p-2 rounded w-full mt-2"
         />
