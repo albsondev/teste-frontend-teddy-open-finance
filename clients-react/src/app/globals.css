@@ -23,6 +23,41 @@ body {
 .selected {
   text-decoration: underline;
 }
+
+@media only screen and (max-width: 768px) {
+
+  .nav-moble {
+    width: 100%;
+  }
+
+  .img-logo {
+    width: 50px !important;
+    margin-right: -1em !important;
+  }
+
+  .nav-links {
+    font-size: 0.6rem;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 60%;
+    margin-left: -2.5em !important;
+  }
+
+  .display-user {
+    font-size: 0.65rem;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: -2.5em !important;
+  }
+
+  .invisible {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
